@@ -6,6 +6,6 @@ sys.dont_write_bytecode = True
 from flask_wtf import Form
 from wtforms import TextAreaField, SubmitField, validators, ValidationError
 
-class DrawmeForm(Form):
-    prompt = TextAreaField("What would you like to draw?",  [validators.InputRequired("Please enter a prompt.")])
+class CreateSpeechForm(Form):
+    prompt = TextAreaField("What would you like to me to say?",  [validators.InputRequired("Please enter a prompt.")])
     submit = SubmitField("Send") 
