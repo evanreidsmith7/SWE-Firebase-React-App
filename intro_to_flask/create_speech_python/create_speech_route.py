@@ -14,7 +14,7 @@ create_speech_blueprint = Blueprint('create_speech', __name__)
 
 @create_speech_blueprint.route('/create_speech',methods=['GET', 'POST'])
 @app.route('/create_speech',methods=['GET', 'POST'])
-def drawme():
+def create_speech():
   form = CreateSpeechForm(request.form)
   
   if request.method == 'POST':
@@ -31,8 +31,8 @@ def drawme():
             voice="alloy",
             input="Today is a wonderful day to build something people love!"
             )
-        audio_response_file = response.stream_to_file(speech_file_path)
-        return render_template('create_speech.html', create_speech_prompt=form.prompt.data,create_speech_response=audio_response_file,success=True)
+        speech = response.stream_to_file(speech_file_path)
+        return render_template('create_speech.html', speech_prompt=form.prompt.data, speech_response=speech, success=True)
       
   elif request.method == 'GET':
       return render_template('create_speech.html', form=form)
