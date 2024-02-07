@@ -9,6 +9,8 @@ sys.dont_write_bytecode = True
 from flask import render_template, request, Flask, Blueprint
 from .create_speech_form import CreateSpeechForm
 from pathlib import Path
+import warnings
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 create_speech_blueprint = Blueprint('create_speech', __name__)
 
@@ -31,7 +33,7 @@ def create_speech():
             voice="alloy",
             input="Today is a wonderful day to build something people love!"
             )
-        speech = response.stream_to_file(speech_file_path)
+        speech = response.stream_to_file("speech.mp3")
         return render_template('create_speech.html', speech_prompt=form.prompt.data, speech_response=speech, success=True)
       
   elif request.method == 'GET':
