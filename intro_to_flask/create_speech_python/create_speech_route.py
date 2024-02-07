@@ -7,32 +7,32 @@ from intro_to_flask import app
 import sys 
 sys.dont_write_bytecode = True
 from flask import render_template, request, Flask, Blueprint
-from .draw_form import DrawmeForm
+from .create_speech_form import CreateSpeechForm
+from pathlib import Path
 
-draw_blueprint = Blueprint('drawme', __name__)
+create_speech_blueprint = Blueprint('create_speech', __name__)
 
-@draw_blueprint.route('/drawme',methods=['GET', 'POST'])
-@app.route('/drawme',methods=['GET', 'POST'])
+@create_speech_blueprint.route('/create_speech',methods=['GET', 'POST'])
+@app.route('/create_speech',methods=['GET', 'POST'])
 def drawme():
-  form = DrawmeForm(request.form)
+  form = CreateSpeechForm(request.form)
   
   if request.method == 'POST':
       if form.validate() == False:
-        return render_template('drawme.html', form=form)
+        return render_template('create_speech.html', form=form)
       else:
         # The following response code adapted from example on: 
         # https://platform.openai.com/docs/api-reference/images
         client = OpenAI()
 
-        response = client.images.generate(
-          model="dall-e-3",
-          prompt=form.prompt.data,
-          quality="standard",
-          size="1024x1024",
-          n=1,
-        )
-        display_image_url = response.data[0].url
-        return render_template('drawme.html', draw_me_prompt=form.prompt.data,draw_me_response=display_image_url,success=True)
+        speech_file_path = Path(__file__).parent / "speech.mp3"
+        response = client.audio.speech.create(
+            model="tts-1",
+            voice="alloy",
+            input="Today is a wonderful day to build something people love!"
+            )
+        audio_response_file = response.stream_to_file(speech_file_path)
+        return render_template('create_speech.html', create_speech_prompt=form.prompt.data,create_speech_response=audio_response_file,success=True)
       
   elif request.method == 'GET':
-      return render_template('drawme.html', form=form)
+      return render_template('create_speech.html', form=form)
