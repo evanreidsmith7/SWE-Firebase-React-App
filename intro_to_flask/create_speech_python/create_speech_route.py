@@ -26,7 +26,7 @@ def create_speech():
       response = client.audio.speech.create(
         model="tts-1",
         voice="alloy",
-        input="Today is a wonderful day to build something people love!"
+        input=form.prompt.data
       )
       with open(speech_file_path, "wb") as audio:
         audio.write(response.content)
