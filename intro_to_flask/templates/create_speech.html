@@ -6,7 +6,10 @@
 {% if success %}
 <p> <b> You asked me to say:  </b>"{{speech_prompt}}"  </p>
 <p> <b> How does this sound?:  </b> </p>
-<audio controls src="./speech.mp3">
+<audio controls>
+   <source src="{{ url_for('serve_audio') }}" type="audio/mpeg">
+   Your browser does not support the audio element.
+</audio>
 {% else %}  
 {% for prompt in form.prompt.errors %}
 <div class="flash">{{ prompt }}</div>
