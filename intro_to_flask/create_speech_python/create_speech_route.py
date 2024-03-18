@@ -28,8 +28,10 @@ def create_speech():
         voice="alloy",
         input=form.prompt.data
       )
+      # TODO: see lehrs solution to do this the proper way
       with open(speech_file_path, "wb") as audio:
         audio.write(response.content)
+        #url_for('temp.gettempfile', filename='speech.mp3')
 
       return render_template('create_speech.html',
                    speech_prompt=form.prompt.data,
