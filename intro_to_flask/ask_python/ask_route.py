@@ -28,8 +28,8 @@ def askme():
             )
             if moderation_response.results[0].flagged:
                 # Handle flagged prompts
-                flash('Your prompt contains inappropriate content. Please try again with a different prompt.', 'error')
-                return render_template('askme.html', form=form)
+                display_text = 'Your prompt contains inappropriate content. Please try again with a different prompt.'
+                return render_template('askme.html',form=form, ask_me_prompt=form.prompt.data, ask_me_response=display_text, success=True)
             else:
                 # Safe to proceed
                 response = client.chat.completions.create(
